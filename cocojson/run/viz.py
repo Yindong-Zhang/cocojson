@@ -19,6 +19,12 @@ def main():
         help="Num of imgs to sample, leave this flag out to process all.",
         type=int,
     )
+    ap.add_argument(
+        "--score_threshold",
+        help="Score threshold for visualization",
+        type=float,
+        default=0.0
+    )
     ap.add_argument("--show", help="To imshow", action="store_true")
     args = ap.parse_args()
 
@@ -27,6 +33,7 @@ def main():
         args.imgroot,
         outdir=args.outdir,
         sample_k=args.sample,
+        score_threshold= args.score_threshold,
         show=args.show,
     )
 

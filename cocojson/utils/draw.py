@@ -67,7 +67,9 @@ def draw_text(
     except KeyError:
         tid = None
 
-    text = f"{cat_id}"
+    text = f"cls_{cat_id}"
+    if 'score' in annot:
+        text += f":{annot['score']:.2f}"
     if tid is not None:
         text += f";t{tid}"
     if occluded:

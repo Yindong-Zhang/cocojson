@@ -5,14 +5,17 @@ from collections import defaultdict
 import filecmp
 from functools import reduce
 from operator import getitem
-
+import os
 IMG_EXTS = [".jpg", ".jpeg", ".png", ".tiff", ".tif", ".bmp", ".gif", ".webp"]
 IMG_EXTS = [x.lower() for x in IMG_EXTS] + [x.upper() for x in IMG_EXTS]
 
 
 def read_json(json_path):
-    with open(json_path, "r") as f:
-        d = json.load(f)
+    if os.path.isfile(json_path):
+        with open(json_path, "r") as f:
+            d = json.load(f)
+    else:
+        d = json.loads(json_path)
     return d
 
 
@@ -117,4 +120,4 @@ def parse(json_path, imgroot, outdir=None):
         outroot_path.mkdir(exist_ok=True, parents=True)
         return coco_dict, json_path, imgroot_path, outdir, outroot_path
     else:
-        return coco_dict, json_path, imgroot_path
+        return coco_dict, json_path, imgroot_path, None, None

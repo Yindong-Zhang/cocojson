@@ -40,7 +40,8 @@ def split(coco_dict, ratios, names=None, do_shuffle=False, setname=""):
 
     total_imgs = len(coco_dict["images"])
     print(f"Total imgs: {total_imgs}")
-    splits_num = [int(round(x * total_imgs)) for x in ratios]
+    splits_num = [int(round(x * total_imgs)) for x in ratios[:-1]]
+    splits_num.append(total_imgs - sum(splits_num))
     assert sum(splits_num) == total_imgs
     print(f"Splitting into {splits_num}")
     splits_num[0] -= 1

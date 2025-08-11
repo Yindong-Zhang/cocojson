@@ -16,7 +16,7 @@ from tqdm import tqdm
 from cocojson.utils.common import read_json, write_json, parse
 
 
-def sample(json_path, imgroot, outdir, k=10):
+def sample(json_path, imgroot, outdir = None, k=10):
     coco_dict, json_path, imgroot_path, outdir, outroot_path = parse(
         json_path, imgroot, outdir
     )
@@ -35,15 +35,18 @@ def sample(json_path, imgroot, outdir, k=10):
     for img_dict in sampled:
         imgpath = imgroot_path / img_dict["file_name"]
         assert imgpath.is_file()
+        if outdir is not None:
+            newip = outroot_path / img_dict["file_name"]
+            newip.parent.mkdir(exist_ok=True, parents=True)
 
-        newip = outroot_path / img_dict["file_name"]
-        newip.parent.mkdir(exist_ok=True, parents=True)
+            # print(f'{imgpath}-->{newip}')
+            copy(imgpath, newip)
 
-        # print(f'{imgpath}-->{newip}')
-        copy(imgpath, newip)
-
-        chosen_img_ids.append(img_dict["id"])
-        new_imgs.append(img_dict)
+            chosen_img_ids.append(img_dict["id"])
+            new_imgs.append(img_dict)
+        else:
+            chosen_img_ids.append(img_dict["id"])
+            new_imgs.append(img_dict)
 
     new_annots = []
     for annot in coco_dict["annotations"]:
@@ -53,8 +56,14 @@ def sample(json_path, imgroot, outdir, k=10):
     coco_dict["images"] = new_imgs
     coco_dict["annotations"] = new_annots
 
-    out_json = outdir / json_path.name
+    if outdir is not None:
+        out_json = outdir / json_path.name
+    else:
+        out_json = json_path.parent / f"sampled_{k}_{json_path.name}"
+
     write_json(out_json, coco_dict)
+    return out_json
+
 
 
 def sample_by_class(

@@ -20,7 +20,7 @@ from cocojson.utils.common import (
 from cocojson.utils.draw import draw_annot
 
 
-def viz(json, root, outdir=None, sample_k=None, show=False):
+def viz(json, root, outdir=None, sample_k=None, show=False, score_threshold=-1):
     img_root = path(root, is_dir=True)
     coco_dict, setname = read_coco_json(json)
     img2annots = get_img2annots(coco_dict["annotations"])
@@ -44,6 +44,10 @@ def viz(json, root, outdir=None, sample_k=None, show=False):
         img = cv2.imread(str(imgpath))
         img_show = img.copy()
         for annot in img2annots[img_dict["id"]]:
+            # 检查标注中是否包含置信度分数且大于阈值
+            if "score" in annot and annot["score"] < score_threshold:
+                continue
+            # 绘制标注并显示图像
             draw_annot(img_show, annot)
         if show:
             cv2.imshow(f"{setname}", img_show)
@@ -75,6 +79,7 @@ def viz_individual_box(json, root, outdir, color=(255, 255, 0), thickness=1, buf
 
         img = cv2.imread(str(img_path))
         img_show = img.copy()
+
         l, t, r, b = draw_annot(
             img_show, annot, color=color, thickness=thickness, buffer=buffer
         )

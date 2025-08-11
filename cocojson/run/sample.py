@@ -7,7 +7,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("json", help="Path to coco json")
     ap.add_argument("imgroot", help="Path to img root")
-    ap.add_argument("outdir", help="Path to output dir")
+    ap.add_argument("--outdir", default = None, help="Path to output dir")
     ap.add_argument("--k", help="Random k images to extract", type=int, default=10)
     args = ap.parse_args()
 
