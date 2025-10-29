@@ -13,4 +13,6 @@ from .filter_cat import filter_cat, filter_cat_from_files
 from .coco_catify import coco_catify, coco_catify_from_files
 from .remove_empty import remove_empty, remove_empty_from_files
 from .remove_missing import remove_missing_from_files
+from .exclude_json import exclude_images_from_files
 from .merge_jsons import merge_jsons_files, merge_jsons
+from .check_and_complete import check_and_complete_coco_from_file

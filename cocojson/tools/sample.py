@@ -81,18 +81,24 @@ def sample_by_class(
     num_cats = len(coco_dict["categories"])
     if isinstance(class_ks, int):
         class_k = class_ks
-        class_ks = [class_k for _ in range(num_cats)]
+        class_ks = [class_k for _ in range(num_cats + 1)]
     elif len(class_ks) == 1:
         class_k = class_ks[0]
-        class_ks = [class_k for _ in range(num_cats)]
-    assert len(class_ks) == num_cats
+        class_ks = [class_k for _ in range(num_cats + 1)]
+    assert len(class_ks) == num_cats + 1
 
     some_dict = defaultdict(list)
+    seen_img_ids = set()
     for annot in tqdm(coco_dict["annotations"]):
         img_id = annot["image_id"]
         cat_id = annot["category_id"]
         if img_id not in some_dict[cat_id]:
             some_dict[cat_id].append(img_id)
+        seen_img_ids.add(img_id)
+    
+    image_ids = set([img["id"] for img in coco_dict["images"]])
+    empty_image_ids = image_ids - seen_img_ids
+    some_dict["empty"] = list(empty_image_ids)
 
     while True:
         for retry in range(retries):

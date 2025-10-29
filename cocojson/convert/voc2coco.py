@@ -66,7 +66,12 @@ def get_categories(xml_files):
     return {name: i for i, name in enumerate(classes_names)}
 
 
-def convert(xml_files, image_dir, json_file):
+def convert(xml_dir, image_dir, json_file):
+    xml_files = glob.glob(os.path.join(xml_dir, "**/*.xml"), recursive=True)
+
+    # If you want to do train/test split, you can pass a subset of xml files to convert function.
+    print("Number of xml files: {}".format(len(xml_files)))
+
     json_dict = {"images": [], "type": "instances", "annotations": [], "categories": []}
     if PRE_DEFINE_CATEGORIES is not None:
         categories = PRE_DEFINE_CATEGORIES
@@ -86,8 +91,8 @@ def convert(xml_files, image_dir, json_file):
             raise ValueError("%d paths found in %s" % (len(path), xml_file))
         
         # print(xml_file)
-
-        filename = image_dir + os.sep + xml_file.split(os.sep, maxsplit= 1)[1].replace(".xml", ".jpg")# .replace("JPEGImages", "Annotations") # 标注文件名 v.s. 图片文件名
+        xml_file = xml_file.replace(xml_dir, "")
+        filename = image_dir + os.sep + xml_file.replace(".xml", ".jpg")# .replace("JPEGImages", "Annotations") # 标注文件名 v.s. 图片文件名
 
         # 检查文件是否存在
         if not os.path.exists(filename):
@@ -166,9 +171,6 @@ if __name__ == "__main__":
     parser.add_argument("image_dir", help="Directory path to image files.", type=str)
     parser.add_argument("json_file", help="Output COCO format json file.", type=str)
     args = parser.parse_args()
-    xml_files = glob.glob(os.path.join(args.xml_dir, "**/*.xml"), recursive=True)
 
-    # If you want to do train/test split, you can pass a subset of xml files to convert function.
-    print("Number of xml files: {}".format(len(xml_files)))
-    convert(xml_files, args.image_dir, args.json_file)
+    convert(args.xml_dir, args.image_dir, args.json_file)
     print("Success: {}".format(args.json_file))

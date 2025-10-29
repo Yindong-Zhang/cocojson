@@ -10,7 +10,8 @@ def main():
     ap.add_argument("outdir", help="Path to output dir")
     ap.add_argument(
         "--class-ks",
-        help="How many to sample for each category, can either be single int or a list of int corresponding to each category. Defaults to 10 per category.",
+        help="How many to sample for each category, can either be single int or a list of int corresponding to each category, \
+        including empty category. Defaults to 10 per category.",
         type=int,
         nargs="*",
         default=10,

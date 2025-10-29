@@ -9,6 +9,7 @@ def main():
     parser.add_argument('out_dir', type=str, help='输出目录')
     parser.add_argument('--min_score', type=float, default=0.5, help='最小score阈值')
     parser.add_argument('--max_score', type=float, default=None, help='最大score阈值')
+    parser.add_argument('--max_imgs', type=int, default=5000, help='最大图片数')
     parser.add_argument('--draw', action='store_true', help='是否画框')
     args = parser.parse_args()
 
@@ -18,6 +19,7 @@ def main():
         out_dir=args.out_dir,
         min_score=args.min_score,
         max_score=args.max_score,
+        max_imgs=args.max_imgs,
         draw=args.draw,
     )
 

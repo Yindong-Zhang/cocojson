@@ -18,6 +18,7 @@ from cocojson.utils.common import (
     get_imgnames_dict,
 )
 from cocojson.utils.draw import draw_annot
+import os
 
 
 def viz(json, root, outdir=None, sample_k=None, show=False, score_threshold=-1):
@@ -28,9 +29,10 @@ def viz(json, root, outdir=None, sample_k=None, show=False, score_threshold=-1):
     if outdir is not None:
         if isinstance(outdir, str):
             outdir = Path(outdir)
-        else:
-            outdir = Path(json).parent / "viz"
-        outdir.mkdir(exist_ok=True, parents=True)
+    else:
+        outdir = Path(json).parent / "viz"
+    outdir.mkdir(exist_ok=True, parents=True)
+    print(f"outdir: {outdir}")
 
     if sample_k:
         assert sample_k > 0, "Sample must be a positive int"

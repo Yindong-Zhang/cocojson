@@ -6,8 +6,8 @@ from cocojson.tools import map_cat_from_files
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("json", help="Path to coco json")
-    ap.add_argument("new_json", help="Path to new categories json")
-    ap.add_argument("map_json", help="Path to mapping json")
+    ap.add_argument("new_json", help="Path to new categories json or stringified json")
+    ap.add_argument("map_json", help="Path to mapping json or stringified json")
     ap.add_argument("--out", help="Output json path", type=str)
     ap.add_argument(
         "--keep-old",

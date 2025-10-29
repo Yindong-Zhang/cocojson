@@ -1,6 +1,5 @@
 """
-Remove empty/negative images from COCO JSON, aka images without associated annotations.
-
+Remove missing images from COCO JSON, aka images that do not exist in the image directory.
 Original image IDs are preserved. 
 """
 
